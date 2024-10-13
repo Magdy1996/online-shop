@@ -49,8 +49,16 @@ public class WebAPISecurityConfig {
                 .authorizeHttpRequests(
                         auth -> {
                             auth
-
+                                    .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole(Role.ADMIN.toString())
                                     .requestMatchers("/api/auth/admin/register").hasRole(Role.ADMIN.toString())
+                                    .requestMatchers(HttpMethod.POST, "/api/products").hasRole(Role.ADMIN.toString())
+                                    .requestMatchers(HttpMethod.POST, "/api/products/add")
+                                    .hasRole(Role.ADMIN.toString())
+                                    .requestMatchers(HttpMethod.PUT, "/api/products/update/**")
+                                    .hasRole(Role.ADMIN.toString())
+                                    .requestMatchers(HttpMethod.POST, "/api/categories").hasRole(Role.ADMIN.toString())
+                                    .requestMatchers(HttpMethod.PUT, "/api/categories/{id}")
+                                    .hasRole(Role.ADMIN.toString())
                                     .requestMatchers("/api/orders/me").hasRole(Role.CUSTOMER.toString())
                                     .requestMatchers(HttpMethod.POST, "/api/orders").hasRole(Role.CUSTOMER.toString())
                                     .requestMatchers(HttpMethod.GET, "/api/orders").hasRole(Role.ADMIN.toString())
@@ -94,7 +102,7 @@ public class WebAPISecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Update with your frontend URL
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000" , "http://localhost:3001"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // Allow credentials like cookies
